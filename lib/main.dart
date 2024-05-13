@@ -1,4 +1,4 @@
-import 'package:emi_calculator/bloc/calculate_interest_bloc.dart';
+import 'package:emi_calculator/bloc/calculate_installment_bloc.dart';
 import 'package:emi_calculator/ui/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

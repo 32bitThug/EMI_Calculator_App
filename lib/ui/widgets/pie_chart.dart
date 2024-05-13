@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:emi_calculator/bloc/calculate_interest_bloc.dart';
+import 'package:emi_calculator/bloc/calculate_installment_bloc.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

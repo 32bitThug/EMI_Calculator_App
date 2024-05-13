@@ -1,4 +1,4 @@
-part of 'calculate_interest_bloc.dart';
+part of 'calculate_installment_bloc.dart';
 
 abstract class CalculateInstallmentState {
   final double loanAmount;

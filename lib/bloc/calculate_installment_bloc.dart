@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'calculate_interest_event.dart';
-part 'calculate_interest_state.dart';
+part 'calculate_installment_event.dart';
+part 'calculate_installment_state.dart';
 
 class CalculateInstallmentBloc
     extends Bloc<CalculateInstallmentEvent, CalculateInstallmentState> {
