@@ -1,8 +1,5 @@
-// import 'package:emi_calculator/bloc/loan_amount_bloc.dart';
 import 'package:emi_calculator/bloc/calculate_interest_bloc.dart';
-import 'package:emi_calculator/screens/home_screen.dart';
-// import 'package:emi_calculator/theme/theme_data.dart'
-// ;
+import 'package:emi_calculator/ui/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (_) => CalculateInterestBloc())],
+      providers: [BlocProvider(create: (_) => CalculateInstallmentBloc())],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         home: HomeScreen(),

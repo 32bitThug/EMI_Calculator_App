@@ -3,37 +3,36 @@ import 'package:emi_calculator/bloc/calculate_interest_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LoanAmount extends StatefulWidget {
-  const LoanAmount({super.key});
+class Interest extends StatefulWidget {
+  const Interest({super.key});
 
   @override
-  State<LoanAmount> createState() => _LoanAmountState();
+  State<Interest> createState() => _InterestState();
 }
 
-class _LoanAmountState extends State<LoanAmount> {
+class _InterestState extends State<Interest> {
   // Initial loan amount value
-  TextEditingController loanAmountController = TextEditingController();
+  TextEditingController interestController = TextEditingController();
   @override
   void initState() {
     super.initState();
-    loanAmountController.text = '2500000';
+    interestController.text = '8.75';
   }
 
   @override
   Widget build(BuildContext context) {
-    final loanAmountBloc = BlocProvider.of<CalculateInterestBloc>(context);
-    return BlocConsumer<CalculateInterestBloc, CalculateInterestState>(
+    final calculateInterestBloc =
+        BlocProvider.of<CalculateInstallmentBloc>(context);
+    return BlocConsumer<CalculateInstallmentBloc, CalculateInstallmentState>(
       listener: (context, state) {
-        // if (state is LoanAmountUpdatedState) {
-        loanAmountController.text = state.loanAmount.toStringAsFixed(0);
-        // }
+        String str = state.interest.toString();
+        if (str.length > 4) {
+          interestController.text =
+              (double.tryParse(str)!.toStringAsFixed(2)).toString();
+        }
       },
       builder: (context, state) {
-        double loanAmount =
-            2500000; // Default value if state is not LoanAmountUpdatedState
-        // if (state is LoanAmountUpdatedState) {
-        loanAmount = state.loanAmount;
-        // }
+        double interest = state.interest;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -43,25 +42,26 @@ class _LoanAmountState extends State<LoanAmount> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Loan Amount'),
+                  const Text('Interest Rate (% P.A.)'),
                   SizedBox(
                     height: 35,
-                    width: 130,
+                    width: 80,
                     child: TextField(
                       decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           contentPadding: EdgeInsets.only(bottom: 3, left: 8),
-                          prefixText: '\u20B9 '),
+                          suffixText: ' % '),
 
-                      controller: loanAmountController,
-                      keyboardType: TextInputType.number,
+                      controller: interestController,
+                      keyboardType:
+                          const TextInputType.numberWithOptions(decimal: true),
 
                       // used to set loan amount
                       onChanged: (value) {
                         double v = double.tryParse(value) ?? 0;
-                        if (v <= 100000000 && v >= 100000) {
-                          loanAmountBloc.add(
-                            LoanAmountUpdated(double.tryParse(value) ?? 0),
+                        if (v <= 15 && v >= 0.5) {
+                          calculateInterestBloc.add(
+                            InterestUpdated(double.tryParse(value) ?? 0),
                           );
                         }
                       },
@@ -77,12 +77,12 @@ class _LoanAmountState extends State<LoanAmount> {
                 overlayColor: Colors.blue.withOpacity(0.3),
               ),
               child: Slider(
-                value: loanAmount,
+                value: interest,
                 onChanged: (newLoanAmount) {
-                  loanAmountBloc.add(LoanAmountUpdated(newLoanAmount));
+                  calculateInterestBloc.add(InterestUpdated(newLoanAmount));
                 },
-                max: 100000000,
-                min: 100000,
+                max: 15,
+                min: 0.5,
               ),
             ),
             const Padding(
@@ -90,8 +90,8 @@ class _LoanAmountState extends State<LoanAmount> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('\u20B91L'),
-                  Text('\u20B910Cr'),
+                  Text('0.5'),
+                  Text('15'),
                 ],
               ),
             ),
@@ -103,7 +103,7 @@ class _LoanAmountState extends State<LoanAmount> {
 
   @override
   void dispose() {
-    loanAmountController.dispose();
+    interestController.dispose();
     super.dispose();
   }
 }

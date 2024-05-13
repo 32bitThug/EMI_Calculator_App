@@ -2,33 +2,38 @@
 import 'package:emi_calculator/bloc/calculate_interest_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:intl/intl.dart';
 
-class Tenure extends StatefulWidget {
-  const Tenure({super.key});
+class LoanAmount extends StatefulWidget {
+  const LoanAmount({super.key});
 
   @override
-  State<Tenure> createState() => _TenureState();
+  State<LoanAmount> createState() => _LoanAmountState();
 }
 
-class _TenureState extends State<Tenure> {
-  TextEditingController tenureController = TextEditingController();
-
+class _LoanAmountState extends State<LoanAmount> {
+  // Initial loan amount value
+  TextEditingController loanAmountController = TextEditingController();
   @override
   void initState() {
     super.initState();
-    tenureController.text = '30';
+    loanAmountController.text = '2500000';
   }
 
   @override
   Widget build(BuildContext context) {
-    final tenureBloc = BlocProvider.of<CalculateInterestBloc>(context);
-    return BlocConsumer<CalculateInterestBloc, CalculateInterestState>(
+    final loanAmountBloc = BlocProvider.of<CalculateInstallmentBloc>(context);
+    return BlocConsumer<CalculateInstallmentBloc, CalculateInstallmentState>(
       listener: (context, state) {
-        tenureController.text = state.tenure.toStringAsFixed(0);
+        // if (state is LoanAmountUpdatedState) {
+        loanAmountController.text = state.loanAmount.toStringAsFixed(0);
+        // }
       },
       builder: (context, state) {
-        double tenure = state.tenure;
+        double loanAmount =
+            2500000; // Default value if state is not LoanAmountUpdatedState
+        // if (state is LoanAmountUpdatedState) {
+        loanAmount = state.loanAmount;
+        // }
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -38,25 +43,25 @@ class _TenureState extends State<Tenure> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Tenure (Years)'),
+                  const Text('Loan Amount'),
                   SizedBox(
                     height: 35,
-                    width: 60,
+                    width: 130,
                     child: TextField(
                       decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.only(bottom: 3, left: 8),
-                      ),
+                          border: OutlineInputBorder(),
+                          contentPadding: EdgeInsets.only(bottom: 3, left: 8),
+                          prefixText: '\u20B9 '),
 
-                      controller: tenureController,
+                      controller: loanAmountController,
                       keyboardType: TextInputType.number,
 
                       // used to set loan amount
                       onChanged: (value) {
                         double v = double.tryParse(value) ?? 0;
-                        if (v <= 30 && v >= 1) {
-                          tenureBloc.add(
-                            TenureUpdated(double.tryParse(value) ?? 0),
+                        if (v <= 100000000 && v >= 100000) {
+                          loanAmountBloc.add(
+                            LoanAmountUpdated(double.tryParse(value) ?? 0),
                           );
                         }
                       },
@@ -72,12 +77,12 @@ class _TenureState extends State<Tenure> {
                 overlayColor: Colors.blue.withOpacity(0.3),
               ),
               child: Slider(
-                value: tenure,
-                onChanged: (newTenure) {
-                  tenureBloc.add(TenureUpdated(newTenure));
+                value: loanAmount,
+                onChanged: (newLoanAmount) {
+                  loanAmountBloc.add(LoanAmountUpdated(newLoanAmount));
                 },
-                max: 30,
-                min: 1,
+                max: 100000000,
+                min: 100000,
               ),
             ),
             const Padding(
@@ -85,8 +90,8 @@ class _TenureState extends State<Tenure> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('1'),
-                  Text('30'),
+                  Text('\u20B91L'),
+                  Text('\u20B910Cr'),
                 ],
               ),
             ),
@@ -98,7 +103,7 @@ class _TenureState extends State<Tenure> {
 
   @override
   void dispose() {
-    tenureController.dispose();
+    loanAmountController.dispose();
     super.dispose();
   }
 }

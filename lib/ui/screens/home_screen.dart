@@ -1,20 +1,19 @@
+import 'package:emi_calculator/ui/widgets/interest_widget.dart';
+import 'package:emi_calculator/ui/widgets/loan_amount_widget.dart';
+import 'package:emi_calculator/ui/widgets/pie_chart.dart';
+import 'package:emi_calculator/ui/widgets/tenure_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:emi_calculator/widgets/interest_widget.dart';
-import 'package:emi_calculator/widgets/loan_amount_widget.dart';
-import 'package:emi_calculator/screens/results_screen.dart';
-import 'package:emi_calculator/widgets/pie_chart.dart';
-import 'package:emi_calculator/widgets/tenure_widget.dart';
-import 'package:fl_chart/fl_chart.dart';
+
+import 'package:emi_calculator/ui/screens/results_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  TextEditingController loanAmountController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

@@ -2,37 +2,33 @@
 import 'package:emi_calculator/bloc/calculate_interest_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:intl/intl.dart';
 
-class Interest extends StatefulWidget {
-  const Interest({super.key});
+class Tenure extends StatefulWidget {
+  const Tenure({super.key});
 
   @override
-  State<Interest> createState() => _InterestState();
+  State<Tenure> createState() => _TenureState();
 }
 
-class _InterestState extends State<Interest> {
-  // Initial loan amount value
-  TextEditingController interestController = TextEditingController();
+class _TenureState extends State<Tenure> {
+  TextEditingController tenureController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
-    interestController.text = '8.75';
+    tenureController.text = '30';
   }
 
   @override
   Widget build(BuildContext context) {
-    final calculateInterestBloc =
-        BlocProvider.of<CalculateInterestBloc>(context);
-    return BlocConsumer<CalculateInterestBloc, CalculateInterestState>(
+    final tenureBloc = BlocProvider.of<CalculateInstallmentBloc>(context);
+    return BlocConsumer<CalculateInstallmentBloc, CalculateInstallmentState>(
       listener: (context, state) {
-        String str = state.interest.toString();
-        if (str.length > 4) {
-          interestController.text =
-              (double.tryParse(str)!.toStringAsFixed(2)).toString();
-        }
+        tenureController.text = state.tenure.toStringAsFixed(0);
       },
       builder: (context, state) {
-        double interest = state.interest;
+        double tenure = state.tenure;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -42,26 +38,25 @@ class _InterestState extends State<Interest> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Interest Rate (% P.A.)'),
+                  const Text('Tenure (Years)'),
                   SizedBox(
                     height: 35,
-                    width: 80,
+                    width: 60,
                     child: TextField(
                       decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          contentPadding: EdgeInsets.only(bottom: 3, left: 8),
-                          suffixText: ' % '),
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.only(bottom: 3, left: 8),
+                      ),
 
-                      controller: interestController,
-                      keyboardType:
-                          const TextInputType.numberWithOptions(decimal: true),
+                      controller: tenureController,
+                      keyboardType: TextInputType.number,
 
                       // used to set loan amount
                       onChanged: (value) {
                         double v = double.tryParse(value) ?? 0;
-                        if (v <= 15 && v >= 0.5) {
-                          calculateInterestBloc.add(
-                            InterestUpdated(double.tryParse(value) ?? 0),
+                        if (v <= 30 && v >= 1) {
+                          tenureBloc.add(
+                            TenureUpdated(double.tryParse(value) ?? 0),
                           );
                         }
                       },
@@ -77,12 +72,12 @@ class _InterestState extends State<Interest> {
                 overlayColor: Colors.blue.withOpacity(0.3),
               ),
               child: Slider(
-                value: interest,
-                onChanged: (newLoanAmount) {
-                  calculateInterestBloc.add(InterestUpdated(newLoanAmount));
+                value: tenure,
+                onChanged: (newTenure) {
+                  tenureBloc.add(TenureUpdated(newTenure));
                 },
-                max: 15,
-                min: 0.5,
+                max: 30,
+                min: 1,
               ),
             ),
             const Padding(
@@ -90,8 +85,8 @@ class _InterestState extends State<Interest> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('0.5'),
-                  Text('15'),
+                  Text('1'),
+                  Text('30'),
                 ],
               ),
             ),
@@ -103,7 +98,7 @@ class _InterestState extends State<Interest> {
 
   @override
   void dispose() {
-    interestController.dispose();
+    tenureController.dispose();
     super.dispose();
   }
 }

@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:emi_calculator/bloc/calculate_interest_bloc.dart';
-import 'package:emi_calculator/widgets/results_widget.dart';
+import 'package:emi_calculator/ui/widgets/results_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,10 +16,8 @@ class Results extends StatefulWidget {
 class _ResultsState extends State<Results> {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<CalculateInterestBloc, CalculateInterestState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+    return BlocConsumer<CalculateInstallmentBloc, CalculateInstallmentState>(
+      listener: (context, state) {},
       builder: (context, state) {
         int loanAmount = state.loanAmount.roundToDouble().toInt();
         double monthlyInterestRate = (state.interest) / 1200;
@@ -29,7 +27,7 @@ class _ResultsState extends State<Results> {
                 pow(1 + monthlyInterestRate, tenureInMonths)) /
             (pow(1 + monthlyInterestRate, tenureInMonths) - 1);
         int roundedEmi = emi.round();
-        
+
         return Padding(
           padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
           child: Column(

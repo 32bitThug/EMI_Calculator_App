@@ -1,13 +1,12 @@
 import 'dart:math';
 
 import 'package:emi_calculator/bloc/calculate_interest_bloc.dart';
-import 'package:emi_calculator/widgets/loan_amount_widget.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyPieChart extends StatefulWidget {
-  const MyPieChart({Key? key}) : super(key: key);
+  const MyPieChart({super.key});
 
   @override
   State<MyPieChart> createState() => _MyPieChartState();
@@ -16,10 +15,8 @@ class MyPieChart extends StatefulWidget {
 class _MyPieChartState extends State<MyPieChart> {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<CalculateInterestBloc, CalculateInterestState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+    return BlocConsumer<CalculateInstallmentBloc, CalculateInstallmentState>(
+      listener: (context, state) {},
       builder: (context, state) {
         int loanAmount = state.loanAmount.roundToDouble().toInt();
         double monthlyInterestRate = (state.interest) / 1200;
